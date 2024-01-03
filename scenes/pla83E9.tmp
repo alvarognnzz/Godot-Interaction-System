@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://bd3t6uyem3m88"]
+
+[ext_resource type="Script" path="res://scripts/player/player.gd" id="1_cbfba"]
+[ext_resource type="Script" path="res://scripts/player/interpolation.gd" id="2_nc7e6"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hnq1i"]
+
+[node name="CharacterBody3D" type="CharacterBody3D"]
+script = ExtResource("1_cbfba")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_hnq1i")
+
+[node name="Head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Head"]
+
+[node name="Interpolation" type="Node3D" parent="."]
+script = ExtResource("2_nc7e6")

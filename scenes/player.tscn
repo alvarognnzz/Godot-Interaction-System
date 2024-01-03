@@ -1,0 +1,127 @@
+[gd_scene load_steps=5 format=3 uid="uid://bd3t6uyem3m88"]
+
+[ext_resource type="Script" path="res://scripts/player/head_raycast.gd" id="1_8x3y5"]
+[ext_resource type="Script" path="res://scripts/player/crosshair.gd" id="1_rnf1l"]
+
+[sub_resource type="GDScript" id="GDScript_gtmjp"]
+script/source = "extends CharacterBody3D
+
+enum State {IDLE, WALKING, JUMPING, SPRINTING}
+
+@onready var head: Node3D = $Head
+@onready var camera: Camera3D = $Head/Camera3D
+
+@export_group(\"Properties\")
+@export_range(1, 10, 0.1) var WALKING_SPEED: float = 4.5
+@export_range(1, 10, 0.1) var SPRINTING_SPEED: float = 6.0
+@export_range(1, 10, 0.1) var JUMP_VELOCITY: float = 4
+@export_range(0, 1, 0.1) var MOUSE_SENSIBILITY: float = 0.1
+@export_range(0, 20, 0.1) var LERP_SPEED: float = 10.0
+@export_range(1, 10, 0.1) var BOB_FREQ: float = 2.0
+@export_range(0, 1, 0.01) var BOB_AMP: float = 0.05
+
+
+var gravity: float = ProjectSettings.get_setting(\"physics/3d/default_gravity\")
+var current_state: State = State.IDLE
+var speed: float = WALKING_SPEED
+var bob: float = 0.0
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		rotate_y(deg_to_rad(-event.relative.x * MOUSE_SENSIBILITY))
+		head.rotate_x(deg_to_rad(-event.relative.y * MOUSE_SENSIBILITY))
+		head.rotation.x = clamp(head.rotation.x, deg_to_rad(-80), deg_to_rad(60))
+
+func _ready() -> void:
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
+func _physics_process(delta: float) -> void:
+	if not is_on_floor():
+		velocity.y -= gravity * delta
+	
+	state_machine()
+
+	if Input.is_action_just_pressed(\"jump\") and is_on_floor():
+		velocity.y = JUMP_VELOCITY
+	
+	move(delta, speed)
+	bob += delta * velocity.length() * float(is_on_floor())	
+
+	match current_state:
+		State.IDLE:
+			pass
+			
+		State.WALKING:
+			speed = WALKING_SPEED
+		
+		State.JUMPING:
+			pass
+		
+		State.SPRINTING:
+			speed = SPRINTING_SPEED
+
+	camera.transform.origin = headbob(bob, BOB_FREQ, BOB_AMP)
+	move_and_slide()
+
+func state_machine() -> void:
+	if Input.get_vector(\"left\", \"right\", \"forward\", \"backward\") == Vector2.ZERO and is_on_floor():
+		current_state = State.IDLE
+	if Input.get_vector(\"left\", \"right\", \"forward\", \"backward\") != Vector2.ZERO and is_on_floor():
+		current_state = State.WALKING
+	if not is_on_floor():
+		current_state = State.JUMPING
+	if Input.get_vector(\"left\", \"right\", \"forward\", \"backward\") != Vector2.ZERO and Input.is_action_pressed(\"sprint\") and is_on_floor():
+		current_state = State.SPRINTING
+
+func move(delta: float, speed: float) -> void:
+	var input_dir: Vector2 = Input.get_vector(\"left\", \"right\", \"forward\", \"backward\")
+	var direction: Vector3 = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	if is_on_floor():
+		if direction:
+			velocity.x = direction.x * speed
+			velocity.z = direction.z * speed
+		else:
+			velocity.x = lerp(velocity.x, direction.x * LERP_SPEED, delta * 7.0)
+			velocity.z = lerp(velocity.z, direction.z * LERP_SPEED, delta * 7.0)
+	else:
+		velocity.x = lerp(velocity.x, direction.x * JUMP_VELOCITY, delta * 2.0)
+		velocity.z = lerp(velocity.z, direction.z * JUMP_VELOCITY, delta * 2.0)
+
+func headbob(time: float, freq: float, amp: float) -> Vector3:
+	var pos: Vector3 = Vector3.ZERO
+	pos.y = sin(time * freq) * amp
+	
+	return pos
+"
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hnq1i"]
+
+[node name="CharacterBody3D" type="CharacterBody3D"]
+script = SubResource("GDScript_gtmjp")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_hnq1i")
+
+[node name="Head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Head"]
+
+[node name="RayCast3D" type="RayCast3D" parent="Head/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, -1.09278e-07, -1, 0, 2.5, -4.37114e-08, 0, 0, 0)
+collision_mask = 2
+collide_with_areas = true
+script = ExtResource("1_8x3y5")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Crosshair" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_rnf1l")
+DOT_RADIUS = 3.0

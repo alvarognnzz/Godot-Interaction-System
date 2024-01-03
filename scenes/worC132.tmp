@@ -1,0 +1,174 @@
+[gd_scene load_steps=12 format=3 uid="uid://8072jt7q6476"]
+
+[ext_resource type="Material" uid="uid://cn1gsy15bkaff" path="res://materials/grid.tres" id="1_am6xq"]
+[ext_resource type="Texture2D" uid="uid://btcyvbptk1ly3" path="res://assets/industrial_sunset_puresky_2k.hdr" id="1_cyjcn"]
+[ext_resource type="Texture2D" uid="uid://cksvjg12upwgw" path="res://materials/grid.jpg" id="3_qcr5r"]
+[ext_resource type="PackedScene" uid="uid://bd3t6uyem3m88" path="res://scenes/player.tscn" id="4_ixq40"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_u5q6k"]
+panorama = ExtResource("1_cyjcn")
+
+[sub_resource type="Sky" id="Sky_wtxxo"]
+sky_material = SubResource("PanoramaSkyMaterial_u5q6k")
+
+[sub_resource type="Environment" id="Environment_7vtog"]
+background_mode = 2
+sky = SubResource("Sky_wtxxo")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="Shader" id="Shader_vot3j"]
+code = "shader_type spatial;
+render_mode blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx;
+uniform vec4 albedo : source_color;
+uniform sampler2D texture_albedo : source_color,filter_linear_mipmap,repeat_enable;
+uniform float point_size : hint_range(0,128);
+uniform float roughness : hint_range(0,1);
+uniform sampler2D texture_metallic : hint_default_white,filter_linear_mipmap,repeat_enable;
+uniform vec4 metallic_texture_channel;
+uniform sampler2D texture_roughness : hint_roughness_r,filter_linear_mipmap,repeat_enable;
+uniform float specular;
+uniform float metallic;
+varying vec3 uv1_triplanar_pos;
+uniform float uv1_blend_sharpness;
+varying vec3 uv1_power_normal;
+uniform vec3 uv1_scale;
+uniform vec3 uv1_offset;
+uniform vec3 uv2_scale;
+uniform vec3 uv2_offset;
+
+
+void vertex() {
+	TANGENT = vec3(0.0,0.0,-1.0) * abs(NORMAL.x);
+	TANGENT+= vec3(1.0,0.0,0.0) * abs(NORMAL.y);
+	TANGENT+= vec3(1.0,0.0,0.0) * abs(NORMAL.z);
+	TANGENT = normalize(TANGENT);
+	BINORMAL = vec3(0.0,1.0,0.0) * abs(NORMAL.x);
+	BINORMAL+= vec3(0.0,0.0,-1.0) * abs(NORMAL.y);
+	BINORMAL+= vec3(0.0,1.0,0.0) * abs(NORMAL.z);
+	BINORMAL = normalize(BINORMAL);
+	uv1_power_normal=pow(abs(NORMAL),vec3(uv1_blend_sharpness));
+	uv1_triplanar_pos = VERTEX * uv1_scale + uv1_offset;
+	uv1_power_normal/=dot(uv1_power_normal,vec3(1.0));
+	uv1_triplanar_pos *= vec3(1.0,-1.0, 1.0);
+}
+
+vec4 triplanar_texture(sampler2D p_sampler,vec3 p_weights,vec3 p_triplanar_pos) {
+	vec4 samp=vec4(0.0);
+	samp+= texture(p_sampler,p_triplanar_pos.xy) * p_weights.z;
+	samp+= texture(p_sampler,p_triplanar_pos.xz) * p_weights.y;
+	samp+= texture(p_sampler,p_triplanar_pos.zy * vec2(-1.0,1.0)) * p_weights.x;
+	return samp;
+}
+
+void fragment() {
+	vec4 albedo_tex = triplanar_texture(texture_albedo,uv1_power_normal,uv1_triplanar_pos);
+	ALBEDO = (albedo.rgb * albedo_tex.r) + albedo_tex.g + albedo_tex.b;
+	float metallic_tex = dot(triplanar_texture(texture_metallic,uv1_power_normal,uv1_triplanar_pos),metallic_texture_channel);
+	METALLIC = metallic_tex * metallic;
+	vec4 roughness_texture_channel = vec4(1.0,0.0,0.0,0.0);
+	float roughness_tex = dot(triplanar_texture(texture_roughness,uv1_power_normal,uv1_triplanar_pos),roughness_texture_channel);
+	ROUGHNESS = (1.0 - albedo_tex.g) * roughness;
+	SPECULAR = specular;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_t5l8i"]
+render_priority = 0
+shader = SubResource("Shader_vot3j")
+shader_parameter/albedo = Color(0.203922, 0.309804, 0.627451, 1)
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 0.5
+shader_parameter/metallic_texture_channel = null
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 0.0
+shader_parameter/uv1_blend_sharpness = 1.0
+shader_parameter/uv1_scale = Vector3(0.5, 0.5, 0.5)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/texture_albedo = ExtResource("3_qcr5r")
+shader_parameter/texture_roughness = ExtResource("3_qcr5r")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v7s8j"]
+render_priority = 0
+shader = SubResource("Shader_vot3j")
+shader_parameter/albedo = Color(0.490196, 0.258824, 0.254902, 1)
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 0.5
+shader_parameter/metallic_texture_channel = null
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 0.0
+shader_parameter/uv1_blend_sharpness = 1.0
+shader_parameter/uv1_scale = Vector3(0.5, 0.5, 0.5)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/texture_albedo = ExtResource("3_qcr5r")
+shader_parameter/texture_roughness = ExtResource("3_qcr5r")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cfp7d"]
+render_priority = 0
+shader = SubResource("Shader_vot3j")
+shader_parameter/albedo = Color(0.262745, 0.329412, 0.0745098, 1)
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 0.5
+shader_parameter/metallic_texture_channel = null
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 0.0
+shader_parameter/uv1_blend_sharpness = 1.0
+shader_parameter/uv1_scale = Vector3(0.5, 0.5, 0.5)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/texture_albedo = ExtResource("3_qcr5r")
+shader_parameter/texture_roughness = ExtResource("3_qcr5r")
+
+[node name="World" type="Node3D"]
+
+[node name="Enviroment" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Enviroment"]
+environment = SubResource("Environment_7vtog")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Enviroment"]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Stage" type="Node3D" parent="."]
+
+[node name="Floor" type="CSGBox3D" parent="Stage"]
+use_collision = true
+size = Vector3(25, 0.2, 25)
+material = ExtResource("1_am6xq")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Stage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.81115, 0.6, -5.15776)
+use_collision = true
+size = Vector3(4, 1, 10)
+material = SubResource("ShaderMaterial_t5l8i")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Stage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8107, 2, -8.19729)
+use_collision = true
+size = Vector3(4, 4, 4)
+material = SubResource("ShaderMaterial_v7s8j")
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="Stage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.81918, 0, -6.19448)
+use_collision = true
+polygon = PackedVector2Array(0, 0, 0, 4, 7, 0)
+depth = 4.0
+material = SubResource("ShaderMaterial_cfp7d")
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("4_ixq40")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+WALKING_SPEED = null
+SPRINTING_SPEED = null
+CROUCHING_SPEED = null
+JUMP_VELOCITY = null
+MOUSE_SENSIBILITY = null
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
