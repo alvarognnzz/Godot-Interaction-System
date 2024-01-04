@@ -1,6 +1,6 @@
 extends Control
 
-@onready var interactor: RayCast3D = $"../../Head/Camera3D/Interactor"
+@onready var interactor: RayCast3D = $"../../Head/Camera3D/RayCast3D"
 
 @export var DOT_RADIUS: float = 2.0
 @export var DOT_COLOR: Color = Color.WHITE
@@ -8,7 +8,6 @@ extends Control
 var HEAD_RAYCAST_COLLIDING: bool = false
 
 func _ready() -> void:
-	interactor.connect("colliding", toogle_raycast)
 	interactor.connect("colliding", toogle_raycast)
 	queue_redraw()
 

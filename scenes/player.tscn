@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://bd3t6uyem3m88"]
+[gd_scene load_steps=6 format=3 uid="uid://bd3t6uyem3m88"]
 
-[ext_resource type="PackedScene" uid="uid://5ifqrbne6ebj" path="res://scenes/interactor.tscn" id="1_64mo7"]
-[ext_resource type="Script" path="res://test/scripts/player/crosshair.gd" id="2_7o84e"]
+[ext_resource type="Script" path="res://scripts/interaction/interactor.gd" id="1_h8qdw"]
+[ext_resource type="Script" path="res://scripts/player/crosshair.gd" id="2_7o84e"]
+[ext_resource type="Script" path="res://scripts/interaction/interaction_label.gd" id="3_3bcg5"]
 
 [sub_resource type="GDScript" id="GDScript_gtmjp"]
 script/source = "extends CharacterBody3D
@@ -107,7 +108,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
 [node name="Camera3D" type="Camera3D" parent="Head"]
 
-[node name="Interactor" parent="Head/Camera3D" instance=ExtResource("1_64mo7")]
+[node name="RayCast3D" type="RayCast3D" parent="Head/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, -1.09278e-07, -1, 0, 2.5, -4.37114e-08, 0, 0, 0)
+script = ExtResource("1_h8qdw")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -121,3 +124,16 @@ grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("2_7o84e")
 DOT_RADIUS = 3.0
+
+[node name="InteractionLabel" type="Label" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 28
+text = "[E] Interact"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("3_3bcg5")

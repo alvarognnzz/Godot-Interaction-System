@@ -1,8 +1,5 @@
-[gd_scene load_steps=2 format=3 uid="uid://5ifqrbne6ebj"]
-
-[ext_resource type="Script" path="res://scripts/interaction/interactor.gd" id="1_1jmj8"]
+[gd_scene format=3 uid="uid://5ifqrbne6ebj"]
 
 [node name="Interactor" type="RayCast3D"]
 transform = Transform3D(1, 0, 0, 0, -1.09278e-07, -1, 0, 2.5, -4.37114e-08, 0, 0, 0)
 collide_with_areas = true
-script = ExtResource("1_1jmj8")
