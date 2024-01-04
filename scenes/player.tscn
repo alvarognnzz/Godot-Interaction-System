@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://bd3t6uyem3m88"]
 
-[ext_resource type="Script" path="res://scripts/player/head_raycast.gd" id="1_8x3y5"]
-[ext_resource type="Script" path="res://scripts/player/crosshair.gd" id="1_rnf1l"]
+[ext_resource type="PackedScene" uid="uid://5ifqrbne6ebj" path="res://scenes/interactor.tscn" id="1_64mo7"]
+[ext_resource type="Script" path="res://test/scripts/player/crosshair.gd" id="2_7o84e"]
 
 [sub_resource type="GDScript" id="GDScript_gtmjp"]
 script/source = "extends CharacterBody3D
@@ -107,11 +107,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
 [node name="Camera3D" type="Camera3D" parent="Head"]
 
-[node name="RayCast3D" type="RayCast3D" parent="Head/Camera3D"]
-transform = Transform3D(1, 0, 0, 0, -1.09278e-07, -1, 0, 2.5, -4.37114e-08, 0, 0, 0)
-collision_mask = 2
-collide_with_areas = true
-script = ExtResource("1_8x3y5")
+[node name="Interactor" parent="Head/Camera3D" instance=ExtResource("1_64mo7")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -123,5 +119,5 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
-script = ExtResource("1_rnf1l")
+script = ExtResource("2_7o84e")
 DOT_RADIUS = 3.0

@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://8072jt7q6476"]
+[gd_scene load_steps=13 format=3 uid="uid://8072jt7q6476"]
 
-[ext_resource type="Material" uid="uid://cn1gsy15bkaff" path="res://materials/grid.tres" id="1_am6xq"]
-[ext_resource type="Texture2D" uid="uid://btcyvbptk1ly3" path="res://assets/industrial_sunset_puresky_2k.hdr" id="1_cyjcn"]
-[ext_resource type="Texture2D" uid="uid://cksvjg12upwgw" path="res://materials/grid.jpg" id="3_qcr5r"]
+[ext_resource type="Material" uid="uid://cn1gsy15bkaff" path="res://test/materials/grid.tres" id="1_am6xq"]
+[ext_resource type="Texture2D" uid="uid://btcyvbptk1ly3" path="res://test/assets/industrial_sunset_puresky_2k.hdr" id="1_cyjcn"]
+[ext_resource type="Texture2D" uid="uid://cksvjg12upwgw" path="res://test/materials/grid.jpg" id="3_qcr5r"]
 [ext_resource type="PackedScene" uid="uid://bd3t6uyem3m88" path="res://scenes/player.tscn" id="4_ixq40"]
+[ext_resource type="Script" path="res://test/scripts/change_color_box.gd" id="4_pkkg0"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_u5q6k"]
 panorama = ExtResource("1_cyjcn")
@@ -142,20 +143,21 @@ use_collision = true
 size = Vector3(10, 0.2, 10)
 material = ExtResource("1_am6xq")
 
-[node name="CSGBox3D4" type="CSGBox3D" parent="Stage"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.88497, 0.57124, -2.00127)
+[node name="ChangeColorBox" type="CSGBox3D" parent="Stage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.88497, 0.57124, -2.26193)
 use_collision = true
 collision_layer = 3
 material = SubResource("ShaderMaterial_588fv")
+script = ExtResource("4_pkkg0")
 
-[node name="CSGBox3D5" type="CSGBox3D" parent="Stage"]
+[node name="MoveBox" type="CSGBox3D" parent="Stage"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.88497, 0.57124, -0.00127375)
 use_collision = true
 collision_layer = 3
 material = SubResource("ShaderMaterial_qbwu1")
 
-[node name="CSGBox3D6" type="CSGBox3D" parent="Stage"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.88497, 0.57124, 1.99873)
+[node name="RemoveBox" type="CSGBox3D" parent="Stage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.88497, 0.57124, 2.2339)
 use_collision = true
 collision_layer = 3
 material = SubResource("ShaderMaterial_8x6ul")
