@@ -6,7 +6,7 @@
 Godot 4 scalable Interaction System using composition. Wrote on GDScript.
 
 <p align="center">
-  <img src="https://github.com/netlaunch/Godot-Interaction-System/assets/154734437/cf2e06bf-7542-49fe-9404-b04bd93a5b7e" />
+  <img src="https://github.com/netlaunch/Godot-Interaction-System/assets/154734437/8c09b231-bf7a-4987-8a24-69a73dd97549" />
 </p>
 
 ## Godot 4 Interaction System
