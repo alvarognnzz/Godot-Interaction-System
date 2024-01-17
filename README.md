@@ -19,5 +19,5 @@ This interaction system simplifies player-object engagement, allowing users to i
 If you want to try the system, you can clone the repository and use the demo stage. If you already have a project and just want to download the system, you can download it from [releases](https://github.com/netlaunch/Godot-Interaction-System/releases).
 
 ## Screenshoots
-![world](https://github.com/netlaunch/Prototyping-FPS-Controller/assets/154734437/4b056f68-a008-42e4-b0a5-20815822a253)
+![world](https://github.com/netlaunch/Godot-Interaction-System/assets/154734437/57d3c300-3e8e-4e1b-83ec-14e9c4608ea3)
 ![player](https://github.com/netlaunch/Prototyping-FPS-Controller/assets/154734437/9f9e5929-6c57-4ef1-86d5-e51ebd224cae)
