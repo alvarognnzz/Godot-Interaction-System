@@ -1,6 +1,6 @@
 extends Label
 
-@onready var interactor: RayCast3D = $"../../Head/Camera3D/RayCast3D"
+@onready var interactor: RayCast3D = $"../../Head/Camera3D/Interactor"
 
 var HEAD_RAYCAST_COLLIDING: bool = false
 

@@ -1,6 +1,6 @@
 extends Control
 
-@onready var interactor: RayCast3D = $"../../Head/Camera3D/RayCast3D"
+@onready var interactor: RayCast3D = $"../../Head/Camera3D/Interactor"
 
 @export var DOT_RADIUS: float = 2.0
 @export var DOT_COLOR: Color = Color.WHITE

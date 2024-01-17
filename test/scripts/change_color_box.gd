@@ -1,12 +1,11 @@
 extends CSGBox3D
 
-@export var action_key: String = "interact"
-@export var action_key_tooltip: String = "E"
-@export var action_message: String = "Change color"
 var state: String = "green"
+var interactable: Interactable
 
-func get_prompt() -> String:
-	return "[%s] %s" % [action_key_tooltip, action_message]
+func _ready() -> void:
+	interactable = Interactable.new()
+	interactable.action_message = "Change color"
 
 func interact() -> void:
 	if state == "green":

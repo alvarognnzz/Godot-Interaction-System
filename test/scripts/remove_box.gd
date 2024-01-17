@@ -1,16 +1,18 @@
 extends CSGBox3D
 
-@export var action_key: String = "interact"
-@export var action_key_tooltip: String = "E"
-@export var action_message: String = "Hide box"
+var state: String = "unhided"
+var interactable: Interactable
 
-func get_prompt() -> String:
-	return "[%s] %s" % [action_key_tooltip, action_message]
+func _ready() -> void:
+	interactable = Interactable.new()
+	interactable.action_message = "Hide box"
 
 func interact() -> void:
-	if action_message == "Hide box":
+	if state == "unhided":
 		hide()
-		action_message = "Unhide box"
+		interactable.action_message = "Unhide box"
+		state = "hided"
 	else:
 		show()
-		action_message = "Hide box"
+		interactable.action_message = "Hide box"
+		state = "unhided"
