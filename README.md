@@ -3,10 +3,10 @@
 ![Godot](https://img.shields.io/badge/Godot%204.2-478cbf.svg?logo=godot-engine&logoColor=white&style=for-the-badge)
 ![GDScript](https://img.shields.io/badge/GDScript-478cbf.svg?logo=godot-engine&logoColor=white&style=for-the-badge)
 
-Godot 4 scalable Interaction System using classes. Wrote on GDScript.
+Godot 4 scalable Interaction System using composition. Wrote on GDScript.
 
 <p align="center">
-  <img src="https://github.com/netlaunch/Prototyping-FPS-Controller/assets/154734437/e80e1224-fc42-46e3-b1b8-70f23530b0e3" />
+  <img src="https://github.com/netlaunch/Godot-Interaction-System/assets/154734437/cf2e06bf-7542-49fe-9404-b04bd93a5b7e" />
 </p>
 
 ## Godot 4 Interaction System
@@ -20,4 +20,4 @@ If you want to try the system, you can clone the repository and use the demo sta
 
 ## Screenshoots
 ![world](https://github.com/netlaunch/Godot-Interaction-System/assets/154734437/57d3c300-3e8e-4e1b-83ec-14e9c4608ea3)
-![player](https://github.com/netlaunch/Prototyping-FPS-Controller/assets/154734437/9f9e5929-6c57-4ef1-86d5-e51ebd224cae)
+![player](https://github.com/netlaunch/Godot-Interaction-System/assets/154734437/21783965-8377-4213-8dd4-59355468b383)
