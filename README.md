@@ -13,7 +13,7 @@ Godot 4 scalable Interaction System using composition. Wrote on GDScript.
 This basic interaction system includes a player that can interact with different objects that respond independently. It's easily scalable thanks to its composition-based foundation.
 
 ## Features
-This interaction system simplifies player-object engagement, allowing users to interact with diverse objects. The independent operation of each object enhances realism and flexibility. The system is designed with a scalable composition-based approach, ensuring easy expansion and integration of additional features in the future.
+This interaction system simplifies player-object engagement, allowing users to interact with diverse objects. The independent operation of each object enhances realism and flexibility. The system is designed with a scalable composition-based approach, ensuring easy expansion and integration of additional features in the future. The player controller code is based on my [Prototyping FPS Controller](https://github.com/alvgonzx/Godot-Prototyping-FPS-Controller)
 
 ## Download
 If you want to try the system, you can clone the repository and use the demo stage. If you already have a project and just want to download the system, you can download it from [releases](https://github.com/netlaunch/Godot-Interaction-System/releases).
