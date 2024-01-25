@@ -15,9 +15,6 @@ This basic interaction system includes a player that can interact with different
 ## Features
 This interaction system simplifies player-object engagement, allowing users to interact with diverse objects. The independent operation of each object enhances realism and flexibility. The system is designed with a scalable composition-based approach, ensuring easy expansion and integration of additional features in the future.
 
-## Usage
-See [documentation](https://github.com/netlaunch/Godot-Interaction-System/blob/master/DOCS.md)
-
 ## Download
 If you want to try the system, you can clone the repository and use the demo stage. If you already have a project and just want to download the system, you can download it from [releases](https://github.com/netlaunch/Godot-Interaction-System/releases).
 
